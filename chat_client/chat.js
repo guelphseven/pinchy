@@ -26,13 +26,59 @@ function sendMessage()
 			$.ajax({
 				url: "sendMessage.php",
 				type: "POST",
-				data: "username="+username+"&chat="+openchat+"&message="+text
+				data: "username="+username+"&hash="+hash+"&chat="+openchat+"&message="+text
 			});
 			$('#message').val("");
 		}
 	}
 }
 
+function openChatRequest(user)
+{
+	$('#chatwindows').append("<div id='chat-"+user+"' class='messages'></div>");
+	$('body').find("#id-"+user).hide();
+	
+	getMessages(user);
+	chatwindows.push(user);
+	$('body').find("#id-"+user).addClass("open");
+	if (openchat == "")
+	{
+		openchat = user;
+		$('body').find("#id-"+user).show();
+		$('body').find("#id-"+user).addClass("selected");
+	}
+}
+function acceptUser(user)
+{
+	$("#chatwindows").append("<div class='#request' id='add-"+user+"'><button>Accept</button></div>");
+}
+function addUser()
+{
+	$('body').find('#request').remove();
+	$("#chatwindows").append("<div class='request' id='request'><input type='text' id='requestname'/><button>Send Request</button><button onclick='cancelRequest()'>Cancel</button></div>");
+	var pos = $('#chatwindows').position();
+	$('body').find('#request').css('top', pos.top);
+	$('body').find('#request').css('left', pos.left);
+}
+function cancelRequest()
+{
+	$('body').find('#request').remove();
+}
+function accept(user)
+{
+	$.ajax({
+		url: "acceptRequest.php",
+		type: "POST",
+		data: "username="+username+"&hash="+hash+"&user="+user,
+		success: function(response)
+		{
+			if (response == "OK")
+			{
+				getUsers();
+			}
+		}
+	});
+}
 function openChat(user)
 {
 	if (!contains(chatwindows, user))
@@ -58,12 +104,39 @@ function openChat(user)
 	}
 }
 
+function checkNewConnections()
+{
+	$.ajax({
+		url: "checkConnections.php",
+		type: "POST",
+		data: "username="+username+"&hash="+hash,
+		success: function(response)
+		{
+			res = $.parseJSON(response);
+			if (res['message'] == "Request")
+			{
+				//addUser(res['user']);
+			}
+			else if(res['message'] == "Accepted")
+			{
+				getUsers();
+			}
+			else
+			{
+				openChatRequest(user);
+			}
+			checkNewConnections();
+		}
+		
+	});
+}
+
 function getMessages(user)
 {
 	$.ajax({
 		url: "checkMessages.php",
 		type: "POST",
-		data: "username="+username+"&chat="+user,
+		data: "username="+username+"&hash="+hash+"&chat="+user,
 		success: function(response)
 		{
 			var objDiv = $('body').find("#chat-"+user);
@@ -79,7 +152,7 @@ function getUsers()
 	$.ajax({
 		url: "getUsers.php",
 		type: "POST",
-		data: "user="+username,
+		data: "user="+username+"&hash="+hash,
 		success: function(response){
 			if (usersJSON != response)
 			{

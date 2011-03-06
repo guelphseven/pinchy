@@ -32,13 +32,13 @@ div.title
 div.left
 {
 	float: left;
-	width: 24%;
+	width: 150px;
 	display: inline-block;
 }
 div.right
 {
 	float: right;
-	width: 75%;
+	width: 445px;
 }
 div.userlist
 {
@@ -52,6 +52,19 @@ div.adduser
 {
 	display: inline-block;
 	margin: auto;
+}
+div.request
+{
+	width: 445px;
+	height: 375px;
+	overflow: auto;
+	display: inline-block;
+	background-color:white;
+	border: 1px solid black;
+	z-index: 5;
+	position: absolute;
+	top: 0px;
+	left: 0px;
 }
 div.messages
 {

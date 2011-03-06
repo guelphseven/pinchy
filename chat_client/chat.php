@@ -1,5 +1,10 @@
 <?php
-
+	if (!isset($_POST["user"]))
+	{
+		die("Need to login");
+	}
+	$user = $_POST['user'];
+	$hash = $_POST['password'];
 ?>
 <html>
 	<head>
@@ -9,8 +14,8 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 		<script src="chat.js"></script>
 		<script>
-			var username = "Herp";
-			var hash = "asdaADfADa";
+			var username = "<?echo $user;?>";
+			var hash = "<?echo $hash;?>";
 		</script>
 	</head>
 	<body>
