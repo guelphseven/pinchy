@@ -1,0 +1,130 @@
+-- MySQL dump 10.13  Distrib 5.1.41, for debian-linux-gnu (i486)
+--
+-- Host: localhost    Database: messaging
+-- ------------------------------------------------------
+-- Server version	5.1.41-3ubuntu12.9
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `access`
+--
+
+DROP TABLE IF EXISTS `access`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `access` (
+  `reader` int(11) DEFAULT NULL,
+  `writer` int(11) DEFAULT NULL,
+  KEY `reader` (`reader`),
+  KEY `writer` (`writer`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `access`
+--
+
+LOCK TABLES `access` WRITE;
+/*!40000 ALTER TABLE `access` DISABLE KEYS */;
+INSERT INTO `access` VALUES (2,3),(3,2),(4,2),(4,3);
+/*!40000 ALTER TABLE `access` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `feeds`
+--
+
+DROP TABLE IF EXISTS `feeds`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `feeds` (
+  `id` int(11) NOT NULL,
+  `origin` int(11) NOT NULL,
+  `post` varchar(4096) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY `id` (`id`),
+  KEY `origin` (`origin`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `feeds`
+--
+
+LOCK TABLES `feeds` WRITE;
+/*!40000 ALTER TABLE `feeds` DISABLE KEYS */;
+INSERT INTO `feeds` VALUES (2,0,'hello world!\n','2011-03-05 23:27:45'),(2,3,'hello world!\n','2011-03-05 23:28:23'),(2,3,'what is up friend','2011-03-05 23:28:28'),(2,3,'hello????\n','2011-03-05 23:28:34'),(3,2,'Luke is awesome','2011-03-06 03:11:00');
+/*!40000 ALTER TABLE `feeds` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(32) NOT NULL,
+  `password` char(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (2,'herp','5f17dd871dacc61834234a9cd5aa375d'),(3,'derp','38366abc1aab09a52ccd588a6292f0c8'),(4,'glerp','0c9a51a64785fa90ececafa181c2620e'),(5,'doom','ec49c0781317992c16925a7a557ae51d'),(14,'newGuy','79a075446a431f63bf2715d4038bb3ff');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `webSessions`
+--
+
+DROP TABLE IF EXISTS `webSessions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `webSessions` (
+  `userid` int(11) DEFAULT NULL,
+  `sessionkey` varchar(32) DEFAULT NULL,
+  UNIQUE KEY `userid` (`userid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `webSessions`
+--
+
+LOCK TABLES `webSessions` WRITE;
+/*!40000 ALTER TABLE `webSessions` DISABLE KEYS */;
+INSERT INTO `webSessions` VALUES (0,'iaqc8vzpkig6d2mbue0qf2bmyr30dwbk'),(14,'mtsk7ctgpdktvej5kn0n968rpdbuwy54'),(5,'srwnkvboepfct1hkhsvhz9uesqnk4lm3'),(2,'e7z8m6a5b4oxs9wcvgiksyht2yrixgjs');
+/*!40000 ALTER TABLE `webSessions` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2011-03-05 21:20:27
