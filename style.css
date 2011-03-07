@@ -1,0 +1,18 @@
+body
+{
+        background-color: #ddddff;
+}
+
+div.container
+{
+        width: 800px;
+        min-height: 600px;
+        border: 1px solid #dddddd;
+        background-color: white;
+        margin: auto;
+}
+
+div.right
+{
+	float: right;
+}

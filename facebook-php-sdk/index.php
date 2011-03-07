@@ -122,8 +122,8 @@ function fbStatus($fbID) {
       }());
     </script>
 
-
-    <h1><a href="home.php">Pinchy</a></h1>
+    
+    <h1><center><a href="home.php">Pinchy</a></center></h1>
 
     <?php if ($me): ?>
     <p>

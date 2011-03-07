@@ -52,15 +52,18 @@ function getPostsAsHTML($url) {
 
 ?>
 <html>
-<head><title>Home</title></head>
+<head><title>Home</title>
+<link rel = "stylesheet" type="text/css" href = "style.css">
+</head>
 <body>
+<div id ="container">
 Welcome <?php echo $username ?>!<br/><br/>
 <a href="add.php" >Add subscriptions</a><br/>
 <a href="remove.php">Remove subscriptions</a><br/>
 
 <?php require("twitter-php/index.php"); ?>
 <?php echo getPostsAsHTML("http://192.168.11.157/api/read.php?username=".$username); ?>
-
+</div>
 </body>
 </html>
 
