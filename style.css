@@ -1,18 +1,218 @@
 body
 {
-        background-color: #ddddff;
+        background-color: #aaaaaa;
 }
+span.username
+{
+	color: #333322;
+	font-weight: bold;
+}
+.footer a
+{
+	font-size: 12px;
+	color: #555;
+	margin-right: 10px;
+	border: none;
+	margin: 0;
+}
+a
+{
+	display: block;
+	width: 100px;
+	margin: 5px auto;
+	text-decoration: none;
+	color: black;
+	text-align: center;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+a:hover
+{
+	background-color: #dddddd;
 
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+div.maintitle
+{
+	width: 800px;
+	height: 35px;
+	margin: 0 auto;
+	color: #dddddd;
+	border: 1px solid #555555;
+	background-color: #555555;
+	-webkit-border-top-left-radius: 12px;
+	-webkit-border-top-right-radius: 12px;
+	-moz-border-radius-topleft: 12px;
+	-moz-border-radius-topright: 12px;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 30px;
+}
+div.maintitle a
+{
+	float: right;
+	margin-right: 10px;
+	font-size: 9px;
+	color: #dddddd;
+	text-decoration: none;
+	display: inline;
+	width: auto;
+	z-index: 2;
+}
+div.maintitle a:hover
+{
+	text-decoration: underline;
+	background-color: inherit;
+}
+div.footer
+{
+	width: 800px;
+	height: 30px;
+	margin: 5px auto;
+}
+div.footer div.message
+{
+	float: right;
+	text-align: right;
+	font-size: 12px;
+	color: #555;
+	margin-right: 10px;
+}
 div.container
 {
         width: 800px;
         min-height: 600px;
-        border: 1px solid #dddddd;
+        border: 1px solid #555555;
         background-color: white;
         margin: auto;
 }
-
-div.right
+div.title
+{
+	height: 50px;
+	text-align: center;
+	font-size: 45px;
+	margin-top: 25px;
+}
+div.settings
+{
+	float: left;
+	width: 250px;
+	margin-left: 25px;
+	margin-top: 60px;
+}
+div.feedcontainer
 {
 	float: right;
+	width: 475px;
+	margin-right: 25px;
+	margin-top: 25px;
+	min-height: 500px;
+}
+div.feed
+{
+	width: 455px;
+	border: 1px solid #aaa;
+	margin: auto;
+	margin-bottom: 5px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	background-color: #efefef;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+}
+div.feed div.message
+{
+	width: 95%;
+	height: auto;
+	margin: auto;
+	display: block;
+}
+div.feed div.messagefooter
+{
+	width: 95%;
+	min-height: 20px;
+	margin: auto;
+	display: block;
+	font-size: 11px;
+	margin-top: 5px;
+}
+div.messagefooter div.from
+{
+	float: left;
+	width: 35%;
+	font-weight: bold;
+}
+div.messagefooter div.date
+{
+	float:right;
+	width: 60%;
+	text-align: right;
+}
+
+form
+{
+	width: 375px;
+	margin: 30px auto 10px auto;
+}
+div.formfooter
+{
+	width: 350px;
+	margin: auto;
+}
+.formfooter a
+{
+	float: right;
+}
+.formfooter a:hover
+{
+	background-color: inherit;
+}
+form label
+{
+	float: left;
+	width: 140px;
+	margin: 1px;
+	margin-bottom: 6px;
+	height: 20px;
+	display: inline-block;
+	padding: 0px;
+}
+
+form input[type="textbox"]
+{
+	float: right;
+	width: 225px;
+	margin: 0;
+	margin-bottom: 5px;
+	height: 20px;
+	padding: 0px;
+	border: 1px solid #dddddd;
+}
+form input[type="password"]
+{
+	float: right;
+	width: 225px;
+	margin: 0;
+	margin-bottom: 5px;
+	height: 20px;
+	padding: 0px;
+	border: 1px solid #dddddd;
+}
+form input[type="submit"]
+{
+	margin: 20px auto 0 auto;
+	width: 100px;
+	height: auto;
+	float: right;
+}
+
+div.clear
+{
+	clear: both;
 }

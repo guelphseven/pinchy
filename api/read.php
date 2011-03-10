@@ -1,6 +1,7 @@
 <?php
-require 'libmsg.php';
-require 'fw/FeedWriter.php';
+require_once 'libmsg.php';
+require_once 'fw/FeedWriter.php';
+require_once '/home/guelphseven/password.php';
 
 function renderFeedAsRSS($feed) {
 	header('Content-Type: application/rss+xml');
@@ -15,7 +16,7 @@ function renderFeedAsRSS($feed) {
 	$TestFeed->setLink('http://192.168.11.157/api/read.php?username='. $username .'&format=rss');
 	$TestFeed->setDescription("Feed of user id: $id, username: $username");
 
-	foreach($feed['items'] as $item) {
+	foreach($feed['feeditems'] as $item) {
 		//Create an empty FeedItem
 		$newItem = $TestFeed->createNewItem();
 
@@ -44,7 +45,7 @@ function renderFeedAsXML($feed) {
 	echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 	echo '<pinchy version="1.0">';
 	echo '<feed title="Pinchy feed for '.$username.'" id="' . $id . '" total="' . count($feed['feeditems']) . '" description="Feed of user id: '. $id . ', username: ' . $username . '">';
-	foreach($feed['items'] as $item) {
+	foreach($feed['feeditems'] as $item) {
 		$origin = usernameFromID($item['origin']);
 		$date = $item['time'];
 		$post = $item['post'];
@@ -53,33 +54,32 @@ function renderFeedAsXML($feed) {
 	echo '</feed></pinchy>';
 }
 
-function getFeed($username) {
-	if(!isValidUsername($username)) {
-		return NULL;
-	}
-
-	if(NULL === ($id = usernameToID($username))) {
-		return NULL;
-	}
-
-	if($result = mysql_query("SELECT origin, post, time FROM feeds WHERE id = $id ORDER BY time DESC;")) {
-		$feed = array('id' => $id, 'username' => $username, 'feeditems' => array());
-		while($row = mysql_fetch_assoc($result)) {
-			$feed['items'][] = array('time' => $row['time'], 'origin' => $row['origin'], 'post' => $row['post']);
-		}
-
-		return $feed;
-	}
-
-	return NULL;
+function renderFeedAsJSON($feed)
+{
+	echo json_encode($feed);
 }
 
 if($username = safeArrayValue($_GET, 'username')) {
 	if(!startSQLConnection()) {
 		httpDeath(503);
 	}
+	
+	if (NULL === ($time = safeArrayValue($_GET, 'time')))
+	{
+		$time = 0;
+	}
+	
+	if (NULL === ($limit = safeArrayValue($_GET, 'limit')))
+	{
+		$limit = 0;
+	}
 
-	if(NULL === ($feed = getFeed($username))) {
+	if (NULL === ($page = safeArrayValue($_GET, 'page')))
+	{
+		$page = -1;
+	}
+
+	if(NULL === ($feed = getFeed($username, $time, $limit, $page))) {
 		httpDeath(400);
 	}
 
@@ -95,7 +95,7 @@ if($username = safeArrayValue($_GET, 'username')) {
 			renderFeedAsRSS($feed);
 			break;
 		case 'json':
-			httpDeath(400);
+			renderFeedAsJSON($feed);
 			break;
 		case 'atom':
 			httpDeath(400);
