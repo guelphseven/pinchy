@@ -11,11 +11,12 @@
 			$error="Something's wrong with our database!";
 		else if (!ctype_alnum($username))
 			$error="... That's not even a valid username...";
-		else if (mysql_num_rows(mysql_query("select username from users where username='$username' and password='$hash';", $mysql))!=1)
+		else if (mysql_num_rows($result = mysql_query("select username, id from users where username='$username' and password='$hash';", $mysql))!=1)
 			$error="Invalid username or password";
 
 		if (!isset($error))
 		{
+			/*
 			$key=genRandomString(32);
 			$res=mysql_query("select id from users where username='$username';");
 			$id=mysql_result($res, 0, "id");
@@ -27,6 +28,13 @@
 			print ("<html>");
 			print ("Login successful. <a href=\"home.php\">Continue...</a>");
 			print ("</html>");
+			*/
+			$row = mysql_fetch_assoc($result);
+			$id = $row['id'];
+			session_start();
+			$_SESSION['username'] = $username;
+			$_SESSION['hash'] = $hash;
+			$_SESSION['userid'] = $id;
 			header("Location: home.php");
 			exit();
 		}
@@ -44,11 +52,13 @@
 	</head>
 	<body>
 		<div class="maintitle">
-			Pinchy
+			<img src="img/pinchy_32.png"/>
+			<span>Pinchy</span>
 			<a href="login.php">login</a>
 		</div>
 		<div class ="container">
 			<div class="title">Please Login</div>
+			<img src="img/pinchy_256.png"/>
 			<form name="login" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 				<label for="username" accesskey="U">Username:</label><input type="textbox" name="username" id="username"/>
 				<label for="pass" accesskey="P">Password:</label><input type="password" name="pass" id="pass"/>
@@ -58,10 +68,6 @@
 			<div class="formfooter">
 				<a href="register.php">Register</a>
 			</div>
-	<?php
-		if (isset($error))
-			print ($error."<br/>\n");
-	?>
 		</div>
 		<div class="footer">
 			<div class="message"><span><a href="http://www.guelphseven.com">The Guelph Seven</a></span></div>

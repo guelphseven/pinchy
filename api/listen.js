@@ -1,51 +1,47 @@
 var http = require("http");
 var event = require("http");
-var requestTimeout = 30;
-var requests = new Array();
-var responses = new Array();
+var timer = require("timers");
+var requestTimeout = 240;
+var responses = [];
 
-this.cleaner = setInterval(checkPending(), 30000);
+this.cleaner = timer.setInterval(function(){checkPending();}, 60000);
 
 function checkPending()
 {
 	var now = new Date().getTime()/1000;
 	console.log("Cleaning");
-	for (var user in this.responses)
+	for (var user in responses)
 	{
-		console.log("Cleaning");
-		for (var request in this.user)
+		for (var device in responses[user])
 		{
-			console.log("Cleaning");
-			if (now - request['timestamp'] > requestTimeout)
+			if (now - responses[user][device]['info']['timestamp'] > requestTimeout)
 			{
-				console.log("Ending session: " + request.req['user'] + " - " + request.req['deviceid']);
-				delete request;
+				console.log("Ending session: " + responses[user][device]['info']['user'] + " - " + responses[user][device]['info']['deviceid']);
+				responses[user][device]['response'].writeHead(408, {'content-type': 'text/plain', "Access-Control-Allow-Origin": "*"});
+				responses[user][device]['response'].write("Timeout");
+				responses[user][device]['response'].end();
+				delete responses[user][device];
 			}
 		}
 	}
-	console.log("Done Cleaning");
 }
-/*
+
 http.createServer(function(request, response)
 {
 	request_info = require('url').parse(request.url, true);
 	var user = request_info['query']['user'];
 	var deviceid = request_info['query']['deviceid'];
 
-
-	//response.writeHead(200, { "Content-Type": "text/plain"});
-	//response.end(request.url + ": responded to "+user+"!!!");
-	response.req = request_info;
-	response.req['timestamp'] = parseInt((new Date().getTime())/1000);
-	
 	if (responses[user] == null) responses[user] = new Array();
-	responses[user][deviceid] = (response);
-	console.log("Request for user info: " + user + " ID: " + deviceid + " timestamp: " + response.req['timestamp']);
+	responses[user][deviceid] = new Array();
+	responses[user][deviceid]['info'] = request_info['query'];
+	responses[user][deviceid]['info']['timestamp'] = parseInt((new Date().getTime())/1000);
 	
-	//responses[request_info.query.user] = (response);
-	//userwaits.push(request_info.query.user);
+	responses[user][deviceid]['response'] = response;
+
+	console.log("Request for user info: " + user + " ID: " + deviceid + " timestamp: " + responses[user][deviceid]['info']['timestamp']);
 }).listen(8000);
-*/
+
 event.createServer(function(request, response)
 {
 	request_info = require('url').parse(request.url, true);
@@ -63,14 +59,14 @@ event.createServer(function(request, response)
 		response.end("Not Waiting");
 	}
 }).listen(8080);
-/*
+
 function sendUpdate(user)
 {
 	console.log("Sending update for: " + user);
 	if (responses[user] == null) return;
-		for (var request in responses[user])
+		for (var device in responses[user])
 		{
-			var data = 'username='+user+'&format=json&time='+request.req['timestamp'];
+			var data = 'username='+user+'&format=json&time='+responses[user][device]['info']['timestamp'];
 			var header = {
 				'Host': 'http://kmonk.g7',
 				'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -82,7 +78,7 @@ function sendUpdate(user)
 				method: 'GET'
 			};
 			var response = '';
-			//var site = http.createClient(80, "localhost");
+
 			var feed = http.request(options, function(res)
 			{
 				res.setEncoding('utf8');
@@ -93,15 +89,12 @@ function sendUpdate(user)
 						response += chunk;
 				});
 				res.on("end", function() {
-					//var this_current = this_current;
-					request.writeHead(code, {'content-type': 'text/plain', "Access-Control-Allow-Origin": "*"});
-					request.write(response);
-					request.end();
-					delete request;
+					responses[user][device]['response'].writeHead(code, {'content-type': 'text/plain', "Access-Control-Allow-Origin": "*"});
+					responses[user][device]['response'].write(response);
+					responses[user][device]['response'].end();
+					delete responses[user][device];
 				});
 			});
-			//feed.write();
 			feed.end();
 		}
 }
-*/

@@ -2,35 +2,10 @@
 	require_once '/home/guelphseven/password.php';
 	require_once 'api/libmsg.php';
 
-	if (!isset($_COOKIE["sessionKey"]) || !isset($_COOKIE["userid"]))
+	session_start();
+	if (!isset($_SESSION['username']))
 	{
-		print("<html>You need to <a href=\"login.php\">login</a> first.</html>");
-		exit();
-	}
-	$key=$_COOKIE['sessionKey'];
-	$id=$_COOKIE['userid'];
-	startSQLConnection();
-	/*
-	$mysql=mysql_connect('localhost', 'messaging', $MYSQL_PASS);
-	if (!$mysql || !mysql_select_db('messaging'))
-		$error="Something's wrong with our database!";
-	else if (!ctype_alnum($key) || ! ctype_digit($id))
-		$error="Seriously, WHAT are you doing?";
-	*/
-	if (mysql_num_rows(mysql_query("select userid from webSessions where userid=".$id." and sessionkey='$key';"))!=1)
-		$error="Your session has expired".mysql_error();
-
-	if (!isset($error))
-	{
-		$res=mysql_query("select username from users where id=$id");
-		$username=mysql_result($res, 0, "username");
-	}
-	else
-	{
-		print("<html>");
-		print($error."<br/>");
-		print("Try <a href=\"login.php\"> logging in.</a>");
-		print("</html>");
+		header("Location: login.php");
 		exit();
 	}
 ?>
@@ -44,19 +19,20 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.min.js"></script>
 		<script>
-			var username = "<?echo $username;?>";
+			var username = "<?echo $_SESSION['username'];?>";
 			var numPinches = 10;
-			var deviceid = "<?echo rand();?>";
+			var deviceid = "<?echo session_id();?>";
 		</script>
 		<script src="script.js"></script>
 	</head>
 	<body>
 		<div class="maintitle">
-			Pinchy
-			<a href="login.php">login</a>
+			<img src="img/pinchy_32.png"/>
+			<span>Pinchy</span>
+			<a href="logout.php">logout</a>
 		</div>
 		<div class ="container">
-			<div class="title"><span class="username"><?echo $username;?></span> dashboard</div>
+			<div class="title"><span class="username"><?echo $_SESSION['username'];?></span> dashboard</div>
 			<div class="settings">
 				<a id="feedbutton" href="#">Feed</a>
 				<a id="allowedbutton" href="#">Allowed Users</a>

@@ -104,6 +104,22 @@ function canWriteToFeedHash($username, $hash, $recipient)
 
 	return false;
 }
+
+function canWriteToFeed($userid, $recipientid)
+{
+	echo "SELECT COUNT(*) FROM access WHERE reader = '$userid' AND writer = '$recipientid';";
+	if($result = mysql_query("SELECT COUNT(*) FROM access WHERE reader = '$userid' AND writer = '$recipientid';")) {
+		//echo $result;
+		$number = mysql_fetch_array($result, MYSQL_NUM);
+		print_r($number);
+		if($number[0] > 0) {
+			return true;
+		}
+	}
+
+	return false;
+}
+/*
 function canWriteToFeed($username, $password, $recipient) {
 	if(!isAuthenticatedUser($username, $password)) {
 		return false;
@@ -125,7 +141,7 @@ function canWriteToFeed($username, $password, $recipient) {
 
 	return false;
 }
-
+*/
 function writeToFeed($reader, $writer, $data) {
 	if(NULL === ($reader_id = usernameToID($reader))) {
 		return false;
@@ -166,7 +182,57 @@ function getFeed($username, $time=0, $limit=0, $page=-1) {
 
 		return $feed;
 	}
-	echo "whatttt?";
+
 	return NULL;
+}
+function getAllowedUsers($userid)
+{
+	$result = mysql_query("SELECT writer FROM access WHERE reader = '$userid';");
+	$return = null;
+	if ($result)
+	{
+		while ($row = mysql_fetch_assoc($result))
+		{
+			$return[] = $row['writer'];
+		}
+	}
+	return $return;
+}
+
+function removeUserIDFromAllow($ownerid, $user)
+{
+		$query = "DELETE FROM access WHERE reader = '$ownerid' AND writer = '$user';";
+		$result = mysql_query($query);
+		if (mysql_get_num_rows($result) > 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+}
+
+function addUserToAllow($ownerid, $user)
+{
+	if (isValidUsername($user))
+	{
+		$userid = usernameToID($user);
+		if ($userid == NULL) return false;
+		$query = "INSERT INTO access (reader, writer) VALUES ('$ownerid', '$userid');";
+		$result = mysql_query($query);
+		if (mysql_num_rows($result) > 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
 }
 ?>

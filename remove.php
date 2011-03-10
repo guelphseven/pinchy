@@ -16,6 +16,6 @@
 			exit();
 		}
 		startSQLConnection();
-		addUserToAllow($_SESSION['userid'], $_POST['user']);
+		removeUserIDFromAllow($_SESSION['userid'], $_POST['user']);
 	}
 ?>

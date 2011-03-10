@@ -1,0 +1,1 @@
+<div class="error">You are unable to send to user: <?echo $_POST['user'];?></div>

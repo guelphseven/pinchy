@@ -1,26 +1,28 @@
 <?php
 require 'libmsg.php';
-
-if(($user = safeArrayValue($_POST, 'username')) &&
-		(($pass = safeArrayValue($_POST, 'password')) || ($hash = safeArrayValue($_POST, 'hash')))&&
-		($data = safeArrayValue($_POST, 'data')) &&
-		($dest = safeArrayValue($_POST, 'recipient'))) {
+session_start();
+if (!isset($_SESSION['username']))
+{
+	httpDeath(503);
+}
+else if (!isset($_POST['recipient']) || !isset($_POST['data']))
+{
+	httpDeath(401);
+}
+else
+{
+	$user = $_SESSION['username'];
+	$hash = $_SESSION['hash'];
+	$dest = $_POST['recipient'];
+	$data = $_POST['data'];
+	
 	if(!startSQLConnection()) {
 		httpDeath(503);
 	}
-	
-	if ($hash == NULL)
-	{
-		if(!canWriteToFeed($user, $pass, $dest)) {
-			httpDeath(401);
-		}
-	}
-	else
-	{
-		if(!canWriteToFeedHash($user, $hash, $dest)) {
-			httpDeath(401);
-		}		
-	}
+	$destid = usernameToID($dest);
+	if(!canWriteToFeed($destid, $_SESSION['userid'])) {
+		httpDeath(401);
+	}		
 
 	$data = mysql_real_escape_string($data);
 	if(!writeToFeed($dest, $user, $data)) {
@@ -40,7 +42,5 @@ if(($user = safeArrayValue($_POST, 'username')) &&
 	}
 
 	httpDeath(200);
-} else {
-	httpDeath(400);
 }
 ?>

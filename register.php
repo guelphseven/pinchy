@@ -10,11 +10,13 @@
 	</head>
 	<body>
 		<div class="maintitle">
-			Pinchy
+			<img src="img/pinchy_32.png"/>
+			<span>Pinchy</span>
 			<a href="login.php">login</a>
 		</div>
 		<div class ="container">
 			<div class="title">Register</div>
+			<img src="img/pinchy_256.png"/>
 				<form id="register" method="post" action="registerPost.php">
 					<label for='username' accesskey='U'>Username:</label><input type="textbox" name="username" id="username"/>
 					<label for='password' accesskey='P'>Password:</label><input type="password" name="password" id="password"/>
