@@ -1,0 +1,36 @@
++---------------------+
+| Tables_in_messaging |
++---------------------+
+| access              |
+| feeds               |
+| users               |
+| webSessions         |
++---------------------+
+
+
++-----------+---------------+------+-----+-------------------+-----------------------------+
+| Field     | Type          | Null | Key | Default           | Extra                       |
++-----------+---------------+------+-----+-------------------+-----------------------------+
+| id        | int(11)       | NO   | MUL | NULL              |                             |
+| origin_id | int(11)       | YES  | MUL | NULL              |                             |
+| origin    | varchar(32)   | YES  |     | NULL              |                             |
+| post      | varchar(4096) | NO   |     | NULL              |                             |
+| tags      | text          | YES  |     | NULL              |                             |
+| time      | timestamp     | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++-----------+---------------+------+-----+-------------------+-----------------------------+
+
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| id           | int(11)     | NO   | PRI | NULL    | auto_increment |
+| username     | varchar(32) | NO   | UNI | NULL    |                |
+| password     | char(32)    | NO   |     | NULL    |                |
+| organization | tinyint(1)  | YES  |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| userid     | int(11)     | YES  | UNI | NULL    |       |
+| sessionkey | varchar(32) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+

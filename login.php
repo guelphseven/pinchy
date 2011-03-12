@@ -33,7 +33,7 @@
 			$id = $row['id'];
 			session_start();
 			$_SESSION['username'] = $username;
-			$_SESSION['hash'] = $hash;
+			$_SESSION['userhash'] = $hash;
 			$_SESSION['userid'] = $id;
 			header("Location: home.php");
 			exit();

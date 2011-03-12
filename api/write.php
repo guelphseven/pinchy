@@ -1,31 +1,63 @@
 <?php
-require 'libmsg.php';
+require_once 'libmsg.php';
+require_once '/home/guelphseven/password.php';
 session_start();
-if (!isset($_SESSION['username']))
+
+if (!isset($_POST['username']) || !isset($_POST['password']))
 {
-	httpDeath(503);
+	if (!isset($_SESSION['username']) || !isset($_SESSION['userhash']))
+	{
+		httpDeath(503);
+	}
 }
-else if (!isset($_POST['recipient']) || !isset($_POST['data']))
+if (!isset($_POST['recipient']) || !isset($_POST['data']))
 {
 	httpDeath(401);
 }
 else
 {
-	$user = $_SESSION['username'];
-	$hash = $_SESSION['hash'];
-	$dest = $_POST['recipient'];
-	$data = $_POST['data'];
-	
 	if(!startSQLConnection()) {
 		httpDeath(503);
 	}
+	if (isset($_POST['username']))
+	{
+		$user = $_POST['username'];
+		$pass = $_POST['password'];
+		if (!isAuthenticatedUser($user, $pass))
+		{
+			httpDeath(503);
+			exit();
+		}
+	}
+	else
+	{
+		$user = $_SESSION['username'];
+		$hash = $_SESSION['userhash'];
+
+		if (!isAuthenticatedUserHash($user, $hash))
+		{
+			httpDeath(503);
+			exit();
+		}
+
+	}
+	$dest = $_POST['recipient'];
+	$data = $_POST['data'];
+	
 	$destid = usernameToID($dest);
-	if(!canWriteToFeed($destid, $_SESSION['userid'])) {
+	$userid = usernameToID($user);
+	if(!canWriteToFeed($destid, $userid)) {
 		httpDeath(401);
 	}		
 
 	$data = mysql_real_escape_string($data);
-	if(!writeToFeed($dest, $user, $data)) {
+	$tags = "";
+	if (isset($_POST['tags']))
+	{
+		$tags = $_POST['tags'];
+	}
+	$tags = mysql_real_escape_string($tags);
+	if(!writeToFeed($dest, $user, $data, $tags)) {
 		httpDeath(400);
 	}
 	else
@@ -42,5 +74,9 @@ else
 	}
 
 	httpDeath(200);
+}
+if (!isset($_SESSION['username']))
+{
+	session_destroy();
 }
 ?>

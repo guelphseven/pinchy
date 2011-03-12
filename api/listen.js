@@ -74,7 +74,7 @@ function sendUpdate(user)
 			var options = {
 				host: 'kmonk.g7',
 				port: 80,
-				path: '/api/read.php?'+data,
+				path: '/pinchy/api/read.php?'+data,
 				method: 'GET'
 			};
 			var response = '';

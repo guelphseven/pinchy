@@ -107,11 +107,11 @@ function canWriteToFeedHash($username, $hash, $recipient)
 
 function canWriteToFeed($userid, $recipientid)
 {
-	echo "SELECT COUNT(*) FROM access WHERE reader = '$userid' AND writer = '$recipientid';";
+	//echo "SELECT COUNT(*) FROM access WHERE reader = '$userid' AND writer = '$recipientid';";
 	if($result = mysql_query("SELECT COUNT(*) FROM access WHERE reader = '$userid' AND writer = '$recipientid';")) {
 		//echo $result;
 		$number = mysql_fetch_array($result, MYSQL_NUM);
-		print_r($number);
+
 		if($number[0] > 0) {
 			return true;
 		}
@@ -142,7 +142,7 @@ function canWriteToFeed($username, $password, $recipient) {
 	return false;
 }
 */
-function writeToFeed($reader, $writer, $data) {
+function writeToFeed($reader, $writer, $data, $tags="") {
 	if(NULL === ($reader_id = usernameToID($reader))) {
 		return false;
 	}
@@ -152,7 +152,7 @@ function writeToFeed($reader, $writer, $data) {
 	}
 	$time = time();
 	$origin = userNameFromID($writer_id);
-	if(mysql_query("INSERT INTO feeds (id, origin_id, origin, post) VALUES ('$reader_id', '$writer_id', '$origin', '$data');")) {
+	if(mysql_query("INSERT INTO feeds (id, origin_id, origin, post, tags) VALUES ('$reader_id', '$writer_id', '$origin', '$data', '$tags');")) {
 		return true;
 	}
 	return false;

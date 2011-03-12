@@ -8,6 +8,7 @@
 ?>
 	Sorry; unauthorized.
 <?
+			session_destroy();
 	}
 	else
 	{

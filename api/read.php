@@ -21,7 +21,7 @@ function renderFeedAsRSS($feed) {
 		$newItem = $TestFeed->createNewItem();
 
 		//Add elements to the feed item
-		$origin = usernameFromID($item['origin']);
+		$origin = usernameFromID($item['origin_id']);
 		$date = $item['time'];
 		$post = $item['post'];
 		$newItem->setTitle("Post for $username from $origin at $date");
@@ -46,7 +46,7 @@ function renderFeedAsXML($feed) {
 	echo '<pinchy version="1.0">';
 	echo '<feed title="Pinchy feed for '.$username.'" id="' . $id . '" total="' . count($feed['feeditems']) . '" description="Feed of user id: '. $id . ', username: ' . $username . '">';
 	foreach($feed['feeditems'] as $item) {
-		$origin = usernameFromID($item['origin']);
+		$origin = usernameFromID($item['origin_id']);
 		$date = $item['time'];
 		$post = $item['post'];
 		echo '<item origin="' . $origin . '" date="' . $date . '">' . $post . '</item>';

@@ -42,7 +42,7 @@
 			<div id="content" class="feedcontainer">
 			</div>
 			<?php //require("twitter-php/index.php"); ?>
-			<div style="clear:both;">&nbsp</div>
+			<div style="clear:both;">&nbsp;</div>
 		</div>
 		<div class="footer">
 			<div class="message"><span><a href="http://www.guelphseven.com">The Guelph Seven</a></span></div>

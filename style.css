@@ -147,6 +147,7 @@ div.feed
 	padding-top: 3px;
 	padding-bottom: 3px;
 	background-color: #efefef;
+	text-align: left;
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
 	border-radius: 7px;

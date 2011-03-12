@@ -108,12 +108,14 @@ function loadSendForm()
 					url: "api/write.php",
 					type: "POST",
 					data: formdata,
-					success: function()
+					success: function(response)
 					{
+						//alert(response);
 						loadFeed();
 					},
-					error: function()
+					error: function(request, status, error)
 					{
+						//alert(request.responseText);
 						unableToSend($('#recipient').val());
 					}
 				});
